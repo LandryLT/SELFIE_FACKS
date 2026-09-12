@@ -35,8 +35,9 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
         with open(conf_file, 'w') as f:
             json.dump(default_cam_settings, f)
 
-    with open(conf_file, 'r'):
-        return json.load(f)
+    with open(conf_file, 'r') as f:
+        output = json.load(f)
+        return output
     
 @app.route("/capture", methods=['GET'])
 def capture():
