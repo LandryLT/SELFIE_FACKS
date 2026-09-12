@@ -22,7 +22,7 @@ def next_file_name() -> str:
 @app.route("/capture", methods=['GET'])
 def capture():
     cam = Camera()
-    file_name = next_file_name()
+    file_name = download_folder.joinpath(next_file_name())
     print(file_name)
     cam.take_photo(file_name)
     return send_file(file_name, mimetype="image/jpeg")
