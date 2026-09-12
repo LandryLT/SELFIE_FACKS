@@ -22,6 +22,14 @@ def next_file_name() -> str:
 @app.route("/capture", methods=['GET'])
 def capture():
     cam = Camera()
+    cam.pc2.set_controls({
+        "ExposureTime": 20000,
+        "AnalogueGain": 1.0,
+        "Brightness": 0.0,
+        "Contrast": 1.0,
+        "Saturation": 1.0,
+        "Sharpness": 1.0,
+    })
     file_name = download_folder.joinpath(next_file_name())
     print(file_name)
     cam.take_photo(file_name)
