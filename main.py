@@ -13,9 +13,10 @@ app = Flask(__name__)
 def next_file_name() -> str:
     all_files = listdir(download_folder)
     max_index = 0
-    for file in all_files:
-        curr_ind = int(re.search(r'^\d\d\d\d\d\d', file))
-        max_index = max(curr_ind, max_index)
+    for file in all_files:        
+        file_prefix = re.search(r'^\d\d\d\d\d\d', file)
+        curr_ind = int(file_prefix if file_prefix else 0)
+        max_index = max(curr_ind + 1, max_index)
     return str(max_index).zfill(6) + "_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + "_facks_watcher.jpg"
 
 @app.route("/capture", methods=['GET'])
