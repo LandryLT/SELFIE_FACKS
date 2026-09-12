@@ -4,6 +4,16 @@ from pathlib import Path
 from os import mkdir, listdir
 import datetime
 import re
+import json
+
+default_cam_settings = {
+        "ExposureTime": 5000,
+        "AnalogueGain": 0.5,
+        "Brightness": 0.0,
+        "Contrast": 1.0,
+        "Saturation": 1.0,
+        "Sharpness": 1.0,
+    }
 
 download_folder = Path('./reel')
 if not download_folder.exists():
@@ -19,17 +29,19 @@ def next_file_name() -> str:
         max_index = max(curr_ind + 1, max_index)
     return str(max_index).zfill(6) + "_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + "_facks_watcher.jpg"
 
+def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
+    if not conf_file.exists():
+        conf_file.touch()
+        with open(conf_file, 'w') as f:
+            json.dump(default_cam_settings, f)
+
+    with open(conf_file, 'r'):
+        return json.load(f)
+    
 @app.route("/capture", methods=['GET'])
 def capture():
     cam = Camera()
-    cam.pc2.set_controls({
-        "ExposureTime": 20000,
-        "AnalogueGain": 1.0,
-        "Brightness": 0.0,
-        "Contrast": 1.0,
-        "Saturation": 1.0,
-        "Sharpness": 1.0,
-    })
+    cam.pc2.set_controls(get_cam_settings())
     file_name = download_folder.joinpath(next_file_name())
     print(file_name)
     cam.take_photo(file_name)
