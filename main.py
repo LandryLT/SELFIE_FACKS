@@ -8,9 +8,6 @@ import re
 download_folder = Path('./reel')
 if not download_folder.exists():
     mkdir(download_folder)
-print("Connecting Camera")
-cam = Camera()
-print("Camera Connected !")
 app = Flask(__name__)
 
 def next_file_name() -> str:
@@ -23,6 +20,9 @@ def next_file_name() -> str:
 
 @app.route("/capture", methods=['GET'])
 def capture():
+    print("Connecting Camera")
+    cam = Camera()
+    print("Camera Connected !")
     file_name = next_file_name()
     print(file_name)
     cam.take_photo(file_name)
