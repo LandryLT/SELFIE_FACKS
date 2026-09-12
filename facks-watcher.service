@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch the Facks Machine
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+ExecStart="/home/facks/Desktop/SELFIE_FACKS/launchFacksWatcher.sh"
+
+[Install]
+WantedBy=multi-user.target
