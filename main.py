@@ -5,11 +5,13 @@ from os import mkdir, listdir
 import datetime
 import re
 
-app = Flask(__name__)
-cam = Camera()
 download_folder = Path('./reel')
 if not download_folder.exists():
     mkdir(download_folder)
+print("Connecting Camera")
+cam = Camera()
+print("Camera Connected !")
+app = Flask(__name__)
 
 def next_file_name() -> str:
     all_files = listdir(download_folder)
@@ -23,7 +25,7 @@ def next_file_name() -> str:
 def capture():
     file_name = next_file_name()
     print(file_name)
-    cam.capture(file_name)
+    cam.take_photo(file_name)
     send_file(file_name, mimetype="image/jpeg")
 
 if __name__ == '__main__':
