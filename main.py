@@ -1,1 +1,1 @@
-import picamera
+import picamzero
