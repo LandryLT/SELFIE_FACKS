@@ -21,13 +21,11 @@ def next_file_name() -> str:
 
 @app.route("/capture", methods=['GET'])
 def capture():
-    print("Connecting Camera")
     cam = Camera()
-    print("Camera Connected !")
     file_name = next_file_name()
     print(file_name)
     cam.take_photo(file_name)
-    send_file(file_name, mimetype="image/jpeg")
+    return send_file(file_name, mimetype="image/jpeg")
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True, host="0.0.0.0")
