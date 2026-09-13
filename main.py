@@ -10,8 +10,8 @@ import RPi.GPIO as GPIO
 pin=37
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pin, GPIO.OUT)
-led_is_on=False
 GPIO.output(pin, GPIO.LOW)
+led_is_on = False
 
 default_cam_settings = {
         "ExposureTime": 5000,
@@ -47,9 +47,10 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
         return output
 
 @app.route("/lamp", methods=['GET'])
-def switchLamp():
-    GPIO.output(pin, GPIO.LOW if led_is_on else GPIO.HIGH)
-    led_is_on = not led_is_on
+def switchLamp(mode: bool = led_is_on):
+    GPIO.output(pin, GPIO.LOW if mode else GPIO.HIGH)
+    led_is_on = not mode
+    return led_is_on
 
 @app.route("/capture", methods=['GET'])
 def capture():
