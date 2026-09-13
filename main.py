@@ -1,5 +1,5 @@
 from picamzero import Camera
-from flask import Flask, send_file, make_response
+from flask import Flask, send_file, make_response, request
 from pathlib import Path
 from os import mkdir, listdir
 import datetime
@@ -7,8 +7,8 @@ import re
 import json
 import RPi.GPIO as GPIO
 
-pin=37
-GPIO.setmode(GPIO.BOARD)
+pin=26
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin, GPIO.OUT)
 GPIO.output(pin, GPIO.LOW)
 led_is_on = False
@@ -45,9 +45,10 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
     with open(conf_file, 'r') as f:
         output = json.load(f)
         return output
-
+    
 @app.route("/lamp", methods=['GET'])
 def switchLamp(mode: bool = None):
+    mode = mode if not mode is None else bool(request.args.get('is_on')) 
     global led_is_on
     if mode is None or mode != led_is_on:
         GPIO.output(pin, GPIO.LOW if led_is_on else GPIO.HIGH)
@@ -64,4 +65,7 @@ def capture():
     return send_file(file_name, mimetype="image/jpeg")
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True, host="0.0.0.0")
+    try:
+        app.run(debug=True, use_reloader=True, host="0.0.0.0")
+    finally:
+        GPIO.cleanup()
