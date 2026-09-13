@@ -48,7 +48,7 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
     
 @app.route("/lamp", methods=['GET'])
 def switchLamp(mode: bool = None):
-    mode = mode if not mode is None else bool(request.args.get('is_on')) 
+    mode = mode if not mode is None else request.args.get('is_on') =='1' 
     global led_is_on
     if mode is None or mode != led_is_on:
         GPIO.output(pin, GPIO.LOW if led_is_on else GPIO.HIGH)
