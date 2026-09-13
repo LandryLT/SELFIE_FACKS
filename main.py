@@ -50,7 +50,7 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
 def switchLamp(mode: bool = led_is_on):
     GPIO.output(pin, GPIO.LOW if mode else GPIO.HIGH)
     led_is_on = not mode
-    return make_response(led_is_on, 200)
+    return make_response(str(led_is_on), 200)
 
 @app.route("/capture", methods=['GET'])
 def capture():
