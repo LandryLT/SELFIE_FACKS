@@ -61,7 +61,9 @@ def capture():
     cam.pc2.set_controls(get_cam_settings())
     file_name = download_folder.joinpath(next_file_name())
     print(file_name)
+    switchLamp(True)
     cam.take_photo(file_name)
+    switchLamp(False)
     return send_file(file_name, mimetype="image/jpeg")
 
 if __name__ == '__main__':
