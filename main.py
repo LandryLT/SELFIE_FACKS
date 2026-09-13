@@ -5,6 +5,13 @@ from os import mkdir, listdir
 import datetime
 import re
 import json
+import RPi.GPIO as GPIO
+
+pin=37
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(pin, GPIO.OUT)
+led_is_on=False
+GPIO.output(pin, GPIO.LOW)
 
 default_cam_settings = {
         "ExposureTime": 5000,
@@ -38,7 +45,12 @@ def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
     with open(conf_file, 'r') as f:
         output = json.load(f)
         return output
-    
+
+@app.route("/lamp", methods=['GET'])
+def switchLamp():
+    GPIO.output(pin, GPIO.LOW if led_is_on else GPIO.HIGH)
+    led_is_on = not led_is_on
+
 @app.route("/capture", methods=['GET'])
 def capture():
     cam = Camera()
