@@ -51,7 +51,7 @@ def switchLamp(mode: bool = None):
     global led_is_on
     if mode is None or mode != led_is_on:
         GPIO.output(pin, GPIO.LOW if led_is_on else GPIO.HIGH)
-        led_is_on = mode
+        led_is_on = mode if not mode is None else not led_is_on 
     return make_response(str(led_is_on), 200)
 
 @app.route("/capture", methods=['GET'])
