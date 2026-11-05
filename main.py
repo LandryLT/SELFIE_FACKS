@@ -34,7 +34,7 @@ def next_file_name() -> str:
         file_prefix = re.match(r'^\d\d\d\d\d\d', file)
         curr_ind = int(file_prefix.group(0) if file_prefix else 0)
         max_index = max(curr_ind + 1, max_index)
-    return str(max_index).zfill(6) + "_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + "_facks_watcher.jpg"
+    return str(max_index).zfill(6) + "_" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_facks_watcher.jpg"
 
 def get_cam_settings(conf_file: Path = Path("./cam_settings.json")) -> dict:
     if not conf_file.exists():
